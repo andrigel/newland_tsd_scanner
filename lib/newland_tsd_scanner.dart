@@ -4,12 +4,12 @@ import 'package:flutter/services.dart';
 
 import 'newland_tsd_scanner_platform_interface.dart';
 
-class _NewlandTsdScanner {
-  Future<void> startScan() async {
+class NewlandTsdScanner {
+  static Future<void> startScan() async {
     await NewlandTsdScannerPlatform.instance.startScan();
   }
 
-  Future<String?> stopScan() async {
+  static Future<String?> stopScan() async {
     return NewlandTsdScannerPlatform.instance.stopScan();
   }
 }
@@ -30,7 +30,6 @@ class TsdScannerWrapper extends StatefulWidget {
 
 class _TsdScannerWrapperState extends State<TsdScannerWrapper> {
   final TextEditingController c = TextEditingController();
-  final _newlandTsdScannerPlugin = _NewlandTsdScanner();
   final TextfieldFocusNode textfieldFocusNode = TextfieldFocusNode();
 
   @override
@@ -41,13 +40,11 @@ class _TsdScannerWrapperState extends State<TsdScannerWrapper> {
         c.clear();
       }
     });
-    _newlandTsdScannerPlugin.startScan();
     super.initState();
   }
 
   @override
   void dispose() {
-    _newlandTsdScannerPlugin.startScan();
     super.dispose();
   }
 
