@@ -35,7 +35,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.newland_tsd_scanner
+        package: com.omega.newland_tsd_scanner
         pluginClass: NewlandTsdScannerPlugin
 
   # To add assets to your plugin package, add an assets section, like this:

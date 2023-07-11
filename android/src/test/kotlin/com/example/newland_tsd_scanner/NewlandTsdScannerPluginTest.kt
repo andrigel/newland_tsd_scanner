@@ -1,4 +1,4 @@
-package com.example.newland_tsd_scanner
+package com.omega.newland_tsd_scanner
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

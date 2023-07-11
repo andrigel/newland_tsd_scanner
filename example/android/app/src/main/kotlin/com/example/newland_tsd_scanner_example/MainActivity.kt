@@ -1,4 +1,4 @@
-package com.example.newland_tsd_scanner_example
+package com.omega.newland_tsd_scanner_example
 
 import io.flutter.embedding.android.FlutterActivity
 

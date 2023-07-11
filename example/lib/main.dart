@@ -15,11 +15,20 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _scanResults = 'Unknown';
 
-  TextEditingController? c;
-
   @override
   void initState() {
+    NewlandTsdScanner.startListerning(onDetect: (code) {
+      setState(() {
+        _scanResults = code.barcode;
+      });
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    NewlandTsdScanner.stopListerning();
+    super.dispose();
   }
 
   @override
@@ -29,16 +38,12 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: TsdScannerWrapper(
-          onDetect: (barcode) => setState(() {
-            _scanResults = barcode;
-          }),
+        body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Center(
-                child: Text('$_scanResults\n'),
-              ),
+              Text('$_scanResults\n'),
             ],
           ),
         ),

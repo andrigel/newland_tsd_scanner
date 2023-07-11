@@ -1,102 +1,38 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'newland_tsd_scanner_platform_interface.dart';
 
 class NewlandTsdScanner {
-  static Future<void> startScan() async {
-    await NewlandTsdScannerPlatform.instance.startScan();
+  static Future<void> startListerning(
+      {Function(TsdBarcode code)? onDetect}) async {
+    await NewlandTsdScannerPlatform.instance
+        .startListerning(onDetect: onDetect);
   }
 
-  static Future<String?> stopScan() async {
-    return NewlandTsdScannerPlatform.instance.stopScan();
+  static Future<void> stopListerning() async {
+    await NewlandTsdScannerPlatform.instance.stopListerning();
   }
 }
 
-class TsdScannerWrapper extends StatefulWidget {
-  final Widget child;
-  final Function(String barcode) onDetect;
+class TsdBarcode {
+  final String barcodeTypeName;
+  final String barcode;
+  final TsdBarcodeScanState state;
 
-  const TsdScannerWrapper({
-    super.key,
-    required this.child,
-    required this.onDetect,
+  TsdBarcode({
+    required this.barcodeTypeName,
+    required this.barcode,
+    required this.state,
   });
 
-  @override
-  State<TsdScannerWrapper> createState() => _TsdScannerWrapperState();
+  TsdBarcode.fromJson(Map<String, dynamic> data)
+      : barcodeTypeName = data['SCAN_BARCODE_TYPE_NAME'],
+        barcode = data['SCAN_BARCODE1'] ?? '',
+        state = data['SCAN_STATE'] == 'ok'
+            ? TsdBarcodeScanState.ok
+            : TsdBarcodeScanState.fail;
 }
 
-class _TsdScannerWrapperState extends State<TsdScannerWrapper> {
-  final TextEditingController c = TextEditingController();
-  final TextfieldFocusNode textfieldFocusNode = TextfieldFocusNode();
-
-  @override
-  void initState() {
-    c.addListener(() {
-      if (c.text.isNotEmpty) {
-        widget.onDetect.call(c.text);
-        c.clear();
-      }
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        widget.child,
-        SizedBox.shrink(
-          child: TextFieldWithNoKeyboard(
-            controller: c,
-            focus: textfieldFocusNode,
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class TextFieldWithNoKeyboard extends EditableText {
-  TextFieldWithNoKeyboard({
-    super.key,
-    required TextEditingController controller,
-    required TextfieldFocusNode focus,
-    TextStyle style = const TextStyle(),
-    Color cursorColor = Colors.transparent,
-  }) : super(
-          controller: controller,
-          focusNode: focus,
-          style: style,
-          cursorColor: cursorColor,
-          autofocus: true,
-          backgroundCursorColor: Colors.black,
-        );
-
-  @override
-  EditableTextState createState() {
-    return TextFieldEditableState();
-  }
-}
-
-class TextFieldEditableState extends EditableTextState {
-  @override
-  void requestKeyboard() {
-    super.requestKeyboard();
-    SystemChannels.textInput.invokeMethod('TextInput.hide');
-  }
-}
-
-class TextfieldFocusNode extends FocusNode {
-  @override
-  bool consumeKeyboardToken() {
-    return false;
-  }
+enum TsdBarcodeScanState {
+  ok,
+  fail,
 }

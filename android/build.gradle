@@ -1,4 +1,4 @@
-group 'com.example.newland_tsd_scanner'
+group 'com.omega.newland_tsd_scanner'
 version '1.0-SNAPSHOT'
 
 buildscript {

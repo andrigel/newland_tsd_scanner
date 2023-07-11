@@ -1,5 +1,5 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
+import 'newland_tsd_scanner.dart';
 import 'newland_tsd_scanner_method_channel.dart';
 
 abstract class NewlandTsdScannerPlatform extends PlatformInterface {
@@ -16,11 +16,11 @@ abstract class NewlandTsdScannerPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> startScan() {
-    throw UnimplementedError('startScan() has not been implemented.');
+  Future<void> startListerning({Function(TsdBarcode code)? onDetect}) {
+    throw UnimplementedError('startListerning() has not been implemented.');
   }
 
-  Future<String?> stopScan() {
-    throw UnimplementedError('stopScan() has not been implemented.');
+  Future<void> stopListerning() {
+    throw UnimplementedError('stopListerning() has not been implemented.');
   }
 }

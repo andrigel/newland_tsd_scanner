@@ -3,13 +3,6 @@
         android:label="newland_tsd_scanner_example"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-
-        <receiver android:name=".ScannerReciever" android:exported="true">
-            <intent-filter>
-                <action android:name="nlscan.action.SCANNER_RESULT"/>
-            </intent-filter>
-        </receiver>
-        
         <activity
             android:name=".MainActivity"
             android:exported="true"
